@@ -1,0 +1,30 @@
+def balance_graph(graph):
+    in_degrees = {node: 0 for node in graph}
+    out_degrees = {node: len(neighbors) for node, neighbors in graph.items()}
+
+    differences = {node: out_degrees[node] - in_degrees[node] for node in graph}
+
+    for node, difference in differences.items():
+        if difference > 0:
+            # Adiciona arestas de saída até que o grau de entrada seja igual ao grau de saída
+            for _ in range(difference):
+                # Escolhe um nó aleatório para conectar
+                random_neighbor = next(iter(graph[node]))
+                graph[node].append(random_neighbor)
+                out_degrees[node] += 1
+                in_degrees[random_neighbor] += 1
+
+    return graph
+
+graph_input = {
+    1: [2, 3, 5],
+    2: [1, 4],
+    3: [2, 5],
+    4: [1, 2, 5],
+    5: [3, 4]
+}
+
+balanced_graph = balance_graph(graph_input)
+
+for node, neighbors in balanced_graph.items():
+    print(f"{node} -> {neighbors}")
